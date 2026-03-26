@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/v1/payment")
 public class PayController {
@@ -18,7 +20,9 @@ public class PayController {
     @PostMapping("/process")
     public String payProcess(@RequestBody Transaction txn){
 
-        rabbitTemplate.convertAndSend("queue", txn);
+        txn.setCreatedDate(LocalDateTime.now());
+
+        rabbitTemplate.convertAndSend("app-queue", txn);
 
         return "Transaction with transaction ID, " + txn.getTransactionId() + " is being Processed";
     }
