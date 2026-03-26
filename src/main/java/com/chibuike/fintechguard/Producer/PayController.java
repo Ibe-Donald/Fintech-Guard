@@ -18,7 +18,7 @@ public class PayController {
     @PostMapping("/process")
     public String payProcess(@RequestBody Transaction txn){
 
-        rabbitTemplate.convertAndSend("queue", txn);
+        rabbitTemplate.convertAndSend("app-queue", txn);
 
         return "Transaction with transaction ID, " + txn.getTransactionId() + " is being Processed";
     }
